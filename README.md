@@ -68,7 +68,7 @@ Only the project's own compiled `build/libgnss_distance.so` or `.dylib` is loade
 
 ## Verified scope
 
-Local macOS validation: **25 tests, zero skips**, native compilation with warnings treated as errors, Python/native reports and English/Spanish summaries. CI is prepared for Python 3.11/3.14 on Linux and Python 3.14 on macOS; its actual result will be recorded after execution.
+Local macOS validation: **25 tests, zero skips**, native compilation with warnings treated as errors, Python/native reports and English/Spanish summaries. [CI passed on GitHub](https://github.com/navalcode/gnss-diagnostics-lab/actions/runs/40878672208) for Python 3.11/3.14 on Linux and Python 3.14 on macOS, including native compilation and all 25 tests in each job.
 
 No Android acquisition, NMEA/raw measurements, real trace, field validation, receiver certification or navigation use is claimed. New physical evidence would need capture provenance, clock semantics, a defensible reference and its own uncertainty analysis.
 

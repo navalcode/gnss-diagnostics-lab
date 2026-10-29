@@ -57,7 +57,7 @@ Solo se carga la biblioteca propia compilada en `build/` cuando se pide `--backe
 
 ## Evidencia y límites
 
-macOS local: **25 tests sin omitidos**, compilación C con warnings como errores, reportes Python/nativo y resúmenes ES/EN. CI preparada para Python 3.11/3.14 Linux y 3.14 macOS; el resultado real se registra tras ejecutarla.
+macOS local: **25 tests sin omitidos**, compilación C con warnings como errores, reportes Python/nativo y resúmenes ES/EN. [CI correcta en GitHub](https://github.com/navalcode/gnss-diagnostics-lab/actions/runs/40878672208) para Python 3.11/3.14 Linux y 3.14 macOS, incluida compilación nativa y los 25 tests en cada job.
 
 No se acredita adquisición Android, NMEA/RAW, trazas reales, validación de campo, certificación o navegación. Una evaluación física necesita procedencia, semántica de relojes, referencia defendible e incertidumbre propia.
 

@@ -13,11 +13,11 @@
   },
   {
     "path": "README.es.md",
-    "sha256": "a4c76f8ba5d8b5319cdbd086e103d21e826e2f1fd7531319a7a02564d418638a"
+    "sha256": "5ae64281bf0a03666d59bd11108d046b10d96cd5dba58d907e4769758888d4d0"
   },
   {
     "path": "README.md",
-    "sha256": "509f2a494a26c18eef59819faa5b146721437aa54ae08d97b5371aa2c30ab691"
+    "sha256": "74fbbf71bd68927b27bc931cfbc31b958f0bfd223e1b938e57243927076d7ea8"
   },
   {
     "path": "examples/observed.csv",
@@ -53,7 +53,7 @@
   },
   {
     "path": "tests/test_diagnostics.py",
-    "sha256": "aef2b3e1009cf9a32199dfab88cb0d1d36245272ef52673ba6f9120c906116c8"
+    "sha256": "28c13334fcdd615e845446734804cb04c6dd617d3f182301710de96bcc90e520"
   },
   {
     "path": "tools/build_native.py",
