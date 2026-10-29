@@ -8,16 +8,20 @@
     "sha256": "72b300b3ea1f89ba1346758f550590a050d744cc63dc3634893a32fa8124090a"
   },
   {
+    "path": "DESIGN.md",
+    "sha256": "f30445d7dbfb4bce3ed3a6f2b43462d3215eef00d52918c772b9d5c81dc3b2ba"
+  },
+  {
     "path": "LICENSE",
     "sha256": "8ee98a68db08740852b491de91922961bb928aaa13f9897c078a0e6eb3e1218a"
   },
   {
     "path": "README.es.md",
-    "sha256": "5ae64281bf0a03666d59bd11108d046b10d96cd5dba58d907e4769758888d4d0"
+    "sha256": "0c4d1e0785a23d1a515d88aefdc21c9fb3bb67737b62f8e258771c4d41fd59ac"
   },
   {
     "path": "README.md",
-    "sha256": "74fbbf71bd68927b27bc931cfbc31b958f0bfd223e1b938e57243927076d7ea8"
+    "sha256": "87d8d65a32538efd76adc34e35bd2b446f1e971e3bdb92268bc948ef77d3e549"
   },
   {
     "path": "examples/observed.csv",
@@ -33,7 +37,7 @@
   },
   {
     "path": "gnss_lab/__main__.py",
-    "sha256": "a69de4abbea896d97af5e37f081e4f49aa2b45f7c71834c77c04d95928ac11be"
+    "sha256": "9987872fa272057e6fdb12766ab903869533eb84b13ad4f3d77505c09c747b7a"
   },
   {
     "path": "gnss_lab/capture.py",
@@ -48,12 +52,16 @@
     "sha256": "b1f3315131aa10acea2a431202bc40241a3111509d80c50acf418ca4140f640e"
   },
   {
+    "path": "gnss_lab/presentation.py",
+    "sha256": "c70d0d22cf7a549f1222ec30bafbcafd9b4d46e848f31a87e502c75cff5b52ac"
+  },
+  {
     "path": "native/distance.c",
     "sha256": "c071beb32469c21f87600f19170266650a3b4126323c1631b2d586293f758b87"
   },
   {
     "path": "tests/test_diagnostics.py",
-    "sha256": "28c13334fcdd615e845446734804cb04c6dd617d3f182301710de96bcc90e520"
+    "sha256": "c302caa34a76e442e3a6bbda4902fef5702834e9993a0747127dd822677ee26c"
   },
   {
     "path": "tools/build_native.py",

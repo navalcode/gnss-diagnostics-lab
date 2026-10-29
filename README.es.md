@@ -64,3 +64,7 @@ No se acredita adquisición Android, NMEA/RAW, trazas reales, validación de cam
 ## Licencia
 
 Código, documentación y datos sintéticos originales: [MIT](LICENSE), Manuel Naval, 2026. Python, compilador y bibliotecas del sistema conservan sus licencias; no se redistribuyen sus fuentes/binarios.
+
+Los reportes de texto agrupan captura, continuidad y comparación con referencia. Muestran umbrales, fixes sin pareja, error medio/p50/p95/RMSE e incertidumbre declarada media con unidades. Los valores ausentes dicen «Sin datos», no cero. JSON y códigos de procesamiento se conservan. [Decisiones de presentación](DESIGN.md).
+
+El incremento de presentación del terminal pasa localmente 27 tests. Los enlaces de CI anteriores conservan su alcance registrado; el badge lleva a los resultados actuales.

@@ -75,3 +75,7 @@ No Android acquisition, NMEA/raw measurements, real trace, field validation, rec
 ## License
 
 Original code, documentation and synthetic fixtures: [MIT](LICENSE), Manuel Naval, 2026. Python, the host C toolchain and system libraries retain their own licenses; their source/binaries are not redistributed here.
+
+Text reports group capture, continuity and reference comparison. They show thresholds, unmatched fixes, mean/p50/p95/RMSE error and mean declared uncertainty with units. Missing values read “No data”, not zero. JSON and processing exit codes are unchanged. [Presentation decisions](DESIGN.md).
+
+The terminal presentation increment passes 27 tests locally. Earlier CI links retain their recorded scope; use the workflow badge for current results.

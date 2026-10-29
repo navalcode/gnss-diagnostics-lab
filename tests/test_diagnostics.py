@@ -177,5 +177,25 @@ class CliTest(unittest.TestCase):
         code,out,err=self.invoke('--backend','native')
         self.assertEqual(0,code); self.assertEqual('native',json.loads(out)['backend'])
 
+    def test_text_exposes_reference_error_separately_from_declared_uncertainty(self):
+        for language in ['en', 'es']:
+            code,out,_=self.invoke('--format','text','--language',language)
+            self.assertEqual(0,code)
+            self.assertIn('p95: 104.52 m',out)
+            self.assertIn('3.00 m',out)
+            self.assertIn('> 2500 ms',out); self.assertIn('> 10 m/s',out)
+            self.assertIn('Exit 0',out)
+
+    def test_text_never_turns_missing_fix_or_reference_pairs_into_zero_error(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'no-fix.csv'
+            path.write_text(','.join(HEADER)+'\n0,0,,,\n1000,0,,,\n')
+            for language,missing in [('en','No data'),('es','Sin datos')]:
+                code,out,_=self.invoke('--samples',str(path),'--format','text','--language',language)
+                self.assertEqual(0,code)
+                self.assertIn('p95: '+missing,out)
+                self.assertNotIn('p95: 0',out)
+                self.assertIn('No fix' if language=='en' else 'Sin fix',out)
+
 
 if __name__=='__main__': unittest.main()

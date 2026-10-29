@@ -5,17 +5,18 @@ import sys
 from .capture import read_capture
 from .diagnostics import analyze
 from .distance import NativeDistance, distance_m
+from .presentation import render_text
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description='Local diagnostics; no device acquisition or network access.')
-    parser.add_argument('--samples', type=Path, default=Path('examples/observed.csv'))
-    parser.add_argument('--reference', type=Path, default=Path('examples/reference.csv'))
-    parser.add_argument('--backend', choices=['python', 'native'], default='python')
-    parser.add_argument('--format', choices=['json', 'text'], default='json')
-    parser.add_argument('--language', choices=['en', 'es'], default='en')
-    parser.add_argument('--max-gap-ms', type=int, default=2500)
-    parser.add_argument('--jump-mps', type=float, default=10.0)
+    parser.add_argument('--samples', type=Path, default=Path('examples/observed.csv'), help='Observed CSV; default: bundled synthetic capture')
+    parser.add_argument('--reference', type=Path, default=Path('examples/reference.csv'), help='Reference CSV using the same schema and session clock')
+    parser.add_argument('--backend', choices=['python', 'native'], default='python', help='Native requires tools/build_native.py; default: python')
+    parser.add_argument('--format', choices=['json', 'text'], default='json', help='JSON for tools, text for review; default: json')
+    parser.add_argument('--language', choices=['en', 'es'], default='en', help='Text summary language; validation messages stay English')
+    parser.add_argument('--max-gap-ms', type=int, default=2500, help='Count fix intervals strictly above this value; default: 2500 ms')
+    parser.add_argument('--jump-mps', type=float, default=10.0, help='Count apparent speeds strictly above this value; default: 10 m/s')
     args = parser.parse_args(argv)
     try:
         distance = NativeDistance() if args.backend == 'native' else distance_m
@@ -29,10 +30,7 @@ def main(argv=None):
     if args.format == 'json':
         print(json.dumps(result, indent=2, allow_nan=False))
     else:
-        labels = ('Diagnóstico sintético', 'Fixes válidos', 'Sin fix', 'Tiempo hasta primer fix', 'Huecos', 'Saltos aparentes', 'No acredita precisión física') if args.language == 'es' else ('Synthetic diagnostics', 'Valid fixes', 'No fix', 'Time to first fix', 'Gaps', 'Apparent jumps', 'Does not establish physical accuracy')
-        first = result['time_to_first_fix_ms']
-        first_text = f'{first} ms' if first is not None else ('Sin fix' if args.language == 'es' else 'No fix')
-        print(f'{labels[0]} · {args.backend}\n{labels[1]}: {result["fix_count"]}\n{labels[2]}: {result["no_fix_count"]}\n{labels[3]}: {first_text}\n{labels[4]}: {result["gap_count"]}\n{labels[5]}: {result["apparent_speed_jump_count"]}\n{labels[6]}')
+        print(render_text(result, args.language))
     return 0
 
 
