@@ -1,0 +1,38 @@
+name: GNSS diagnostics checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            python: "3.11"
+          - os: ubuntu-24.04
+            python: "3.14"
+          - os: macos-15
+            python: "3.14"
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Build native boundary and test all behavior
+        run: |
+          python tools/build_native.py
+          python -m unittest discover -s tests -v
+          python -m gnss_lab --backend python
+          python -m gnss_lab --backend native
+          python -m gnss_lab --format text --language es
