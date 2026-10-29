@@ -1,0 +1,62 @@
+[
+  {
+    "path": ".github/workflows/checks.yml",
+    "sha256": "75bfcb0460c67d3ff46a08ca2633d471b59e4d891602ce1382dc8d4a2c0aa1be"
+  },
+  {
+    "path": ".gitignore",
+    "sha256": "72b300b3ea1f89ba1346758f550590a050d744cc63dc3634893a32fa8124090a"
+  },
+  {
+    "path": "LICENSE",
+    "sha256": "8ee98a68db08740852b491de91922961bb928aaa13f9897c078a0e6eb3e1218a"
+  },
+  {
+    "path": "README.es.md",
+    "sha256": "a4c76f8ba5d8b5319cdbd086e103d21e826e2f1fd7531319a7a02564d418638a"
+  },
+  {
+    "path": "README.md",
+    "sha256": "509f2a494a26c18eef59819faa5b146721437aa54ae08d97b5371aa2c30ab691"
+  },
+  {
+    "path": "examples/observed.csv",
+    "sha256": "224fad249b5aa7c393417f3d91021869d9b79292bc3fcd9d03edd3a15d1a3ecb"
+  },
+  {
+    "path": "examples/reference.csv",
+    "sha256": "2186d18c2ccd5850c814b9ddaa0eee5274e853a9239c714099c308d51bb99d4d"
+  },
+  {
+    "path": "gnss_lab/__init__.py",
+    "sha256": "debd8c516f85fb153f5d4b7c3d621c9005371aee5179a3e4cb329add63bf9c40"
+  },
+  {
+    "path": "gnss_lab/__main__.py",
+    "sha256": "a69de4abbea896d97af5e37f081e4f49aa2b45f7c71834c77c04d95928ac11be"
+  },
+  {
+    "path": "gnss_lab/capture.py",
+    "sha256": "4c81c8263c0825976086d9f8c76ac6cafea4313e845c61448f20d89c590dc43d"
+  },
+  {
+    "path": "gnss_lab/diagnostics.py",
+    "sha256": "d463b56d466e455a08df67587932d441a7e0d07c6a6e54ec4a1a00f1faf04a6c"
+  },
+  {
+    "path": "gnss_lab/distance.py",
+    "sha256": "b1f3315131aa10acea2a431202bc40241a3111509d80c50acf418ca4140f640e"
+  },
+  {
+    "path": "native/distance.c",
+    "sha256": "c071beb32469c21f87600f19170266650a3b4126323c1631b2d586293f758b87"
+  },
+  {
+    "path": "tests/test_diagnostics.py",
+    "sha256": "aef2b3e1009cf9a32199dfab88cb0d1d36245272ef52673ba6f9120c906116c8"
+  },
+  {
+    "path": "tools/build_native.py",
+    "sha256": "add5b945afd88e5ab97801e38fb64c6dcaff37a36eec7097fb14bc5d49e6013a"
+  }
+]

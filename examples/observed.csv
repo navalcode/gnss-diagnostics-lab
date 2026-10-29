@@ -1,0 +1,8 @@
+elapsed_ms,fix,latitude_deg,longitude_deg,horizontal_accuracy_m
+0,0,,,
+1000,0,,,
+2000,1,0,0.00003,3
+3000,1,0.00001,0.00003,3
+4000,0,,,
+5000,0,,,
+6000,1,0,0.001,3
