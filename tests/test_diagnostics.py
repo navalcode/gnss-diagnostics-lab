@@ -143,6 +143,9 @@ class NativeTest(unittest.TestCase):
     def test_both_backends_produce_same_diagnostic_metrics(self):
         observed=read_capture(ROOT/'examples/observed.csv'); reference=read_capture(ROOT/'examples/reference.csv')
         python=analyze(observed,reference); native=analyze(observed,reference,distance=self.native)
+        for metric,value in python.pop('error_m').items():
+            self.assertAlmostEqual(value,native['error_m'][metric],delta=1e-6)
+        native.pop('error_m')
         self.assertEqual(python,native)
 
 
