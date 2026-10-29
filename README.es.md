@@ -1,6 +1,6 @@
 # GNSS Diagnostics Lab
 
-[English](README.md)
+[English](README.md) · [![CI](https://github.com/navalcode/gnss-diagnostics-lab/actions/workflows/checks.yml/badge.svg)](https://github.com/navalcode/gnss-diagnostics-lab/actions/workflows/checks.yml)
 
 Diagnóstico local original sobre **capturas CSV sintéticas**, con Python y un pequeño kernel C integrado mediante `ctypes`. Permite observar tiempo hasta primer fix, ausencia de fix, huecos, saltos aparentes y error frente a una referencia suministrada explícitamente.
 
