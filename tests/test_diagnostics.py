@@ -163,7 +163,7 @@ class CliTest(unittest.TestCase):
         self.assertGreater(result['error_m']['p95'],100)
 
     def test_text_reports_support_english_and_spanish(self):
-        for language,title in [('en','Synthetic diagnostics'),('es','Diagnóstico sintético')]:
+        for language,title in [('en','GNSS capture report'),('es','Informe de captura GNSS')]:
             code,out,err=self.invoke('--format','text','--language',language)
             self.assertEqual(0,code); self.assertIn(title,out); self.assertIn('2000 ms',out)
 
@@ -172,6 +172,26 @@ class CliTest(unittest.TestCase):
         self.assertEqual(2,code); self.assertEqual('',out); self.assertNotIn('private-capture',err)
         code,out,err=self.invoke('--max-gap-ms','0')
         self.assertEqual(2,code); self.assertEqual('',out)
+        with tempfile.TemporaryDirectory() as folder:
+            bad = Path(folder) / 'bad.csv'
+            bad.write_text(','.join(HEADER) + '\n0,2,,,\n')
+            for language in ['en', 'es']:
+                code, out, err = self.invoke('--samples', str(bad), '--language', language)
+                self.assertEqual(2, code); self.assertEqual('', out)
+                self.assertIn('Row 1' if language == 'en' else 'Fila 1', err)
+                self.assertIn('fix', err)
+                self.assertNotIn(str(bad), err)
+
+    def test_missing_native_library_gives_recovery_without_leaking_loader_details(self):
+        from unittest.mock import patch
+        for language in ['en', 'es']:
+            with patch('gnss_lab.__main__.NativeDistance', side_effect=OSError('/private/loader-detail')):
+                code, out, err = self.invoke('--backend', 'native', '--language', language)
+            self.assertEqual(2, code)
+            self.assertEqual('', out)
+            self.assertIn('tools/build_native.py', err)
+            self.assertIn('--backend python', err)
+            self.assertNotIn('/private', err)
 
     def test_native_cli_uses_explicit_backend(self):
         code,out,err=self.invoke('--backend','native')
@@ -184,7 +204,7 @@ class CliTest(unittest.TestCase):
             self.assertIn('p95: 104.52 m',out)
             self.assertIn('3.00 m',out)
             self.assertIn('> 2500 ms',out); self.assertIn('> 10 m/s',out)
-            self.assertIn('Exit 0',out)
+            self.assertIn('do not validate a receiver' if language == 'en' else 'no validan un receptor', out)
 
     def test_text_never_turns_missing_fix_or_reference_pairs_into_zero_error(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -195,7 +215,7 @@ class CliTest(unittest.TestCase):
                 self.assertEqual(0,code)
                 self.assertIn('p95: '+missing,out)
                 self.assertNotIn('p95: 0',out)
-                self.assertIn('No fix' if language=='en' else 'Sin fix',out)
+                self.assertIn('No fix' if language=='en' else 'Sin posición',out)
 
 
 if __name__=='__main__': unittest.main()

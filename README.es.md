@@ -2,9 +2,9 @@
 
 [English](README.md) · [![CI](https://github.com/navalcode/gnss-diagnostics-lab/actions/workflows/checks.yml/badge.svg)](https://github.com/navalcode/gnss-diagnostics-lab/actions/workflows/checks.yml)
 
-Diagnóstico local original sobre **capturas CSV sintéticas**, con Python y un pequeño kernel C integrado mediante `ctypes`. Permite observar tiempo hasta primer fix, ausencia de fix, huecos, saltos aparentes y error frente a una referencia suministrada explícitamente.
+Herramienta Python/C para comparar muestras de posición con una referencia suministrada. Informa de la primera posición, las muestras sin posición, los huecos, los saltos aparentes y el error frente a la referencia. Solo empareja tiempos transcurridos idénticos, sin interpolar ni alinear relojes automáticamente.
 
-El ejemplo incluye adquisición tardía, pérdida de fix y un valor atípico deliberados. Demuestra diagnósticos y una frontera nativa; no mide un receptor ni recoge ubicación del dispositivo.
+Los CSV incluidos son sintéticos y contienen una primera posición tardía, muestras sin posición y un valor atípico deliberados. También puedes seleccionar archivos locales propios. El programa no recoge ubicación del dispositivo. Una pequeña función C de distancia, llamada mediante `ctypes`, permite comparar el resultado con la implementación Python.
 
 ## Ejecutar
 
@@ -20,7 +20,7 @@ python3 -m unittest discover -s tests -v
 
 Ejecutar desde la raíz. Los tests necesitan compilar C y fallan si falta la biblioteca; no omiten silenciosamente esa evidencia. El script solo compila `native/distance.c`; no se distribuyen binarios. El backend Python funciona sin compilador.
 
-Resultado esperado: **3 fixes, 4 muestras sin fix, primer fix a 2000ms, un intervalo superior a 2500ms y un salto aparente superior a 10m/s**. El p95 frente a la referencia es aproximadamente 104,52m y la incertidumbre declarada es 3 m. La discrepancia es intencional; no certifica precisión real.
+Resultado esperado: **3 fixes, 4 muestras sin fix, primer fix a 2000 ms, un intervalo superior a 2500 ms y un salto aparente superior a 10 m/s**. El p95 frente a la referencia es aproximadamente 104,52 m y la incertidumbre declarada es 3 m. La discrepancia es intencional; no certifica precisión real.
 
 Salir con código 0 significa procesamiento correcto, incluso si las métricas son malas. Una entrada inválida o backend nativo no disponible devuelve 2, sin JSON. No se produce una certificación de calidad.
 
@@ -38,33 +38,29 @@ Columnas ausentes o adicionales, duplicados, regresiones, números no finitos y 
 
 `--samples archivo.csv --reference referencia.csv` selecciona archivos locales. El programa solo los lee, imprime en stdout y no hace peticiones de red. La referencia usa el mismo esquema. Solo empareja timestamps exactos con fix en ambas capturas; no interpola ni alinea relojes automáticamente.
 
-## Interpretar el reporte
+## Interpretar el informe
 
 - TTFF es el primer tiempo válido desde el cero declarado; no es un benchmark de adquisición física.
 - Los huecos son intervalos entre fixes válidos consecutivos estrictamente superiores a `--max-gap-ms`. La cola sin fix se informa aparte. Sin fix, TTFF es nulo, nunca cero.
 - La velocidad aparente usa desplazamiento esférico y tiempo real entre muestras. `--jump-mps` es un umbral de demostración, no un límite físico universal.
 - Media, mediana/p50, p95 por rango más próximo y RMSE solo usan parejas válidas. Se cuentan parejas ausentes; sin parejas, errores nulos.
 - La incertidumbre declarada se mantiene separada del error frente a referencia. No se supone nivel de confianza ni se calibra una garantía de precisión.
-- JSON mantiene claves inglesas con unidades. El resumen humano admite ES/EN; los mensajes de validación están en inglés.
+- JSON mantiene claves inglesas con unidades. El resumen humano admite ES/EN; los mensajes de recuperación también. Los nombres de campos CSV y la ayuda de argparse permanecen en inglés.
 
 ## Código y frontera nativa
 
-[`capture.py`](gnss_lab/capture.py): parser acotado y muestras inmutables. [`diagnostics.py`](gnss_lab/diagnostics.py): emparejado explícito y estadísticas. [`distance.py`](gnss_lab/distance.py): modelo Python y ABI tipada. [`distance.c`](native/distance.c): kernel C original. [Tests](tests/test_diagnostics.py): entradas inválidas, distancias analíticas, semántica del reporte, CLI y ABI.
+[`capture.py`](gnss_lab/capture.py): parser acotado y muestras inmutables. [`diagnostics.py`](gnss_lab/diagnostics.py): emparejado explícito y estadísticas. [`distance.py`](gnss_lab/distance.py): modelo Python y ABI tipada. [`distance.c`](native/distance.c): función C original. [Tests](tests/test_diagnostics.py): entradas inválidas, distancias analíticas, semántica del reporte, CLI y ABI.
 
 Modelo esférico de radio elegido 6.371.000 m, sin geodesia elipsoidal. Python/C se contrastan en cero, ecuador, polos, antimeridiano y antípodas. Que coincidan no prueba precisión física independiente. La ABI devuelve estado y resultado, rechaza puntero nulo o coordenadas inválidas sin sobrescribir la salida.
 
 Solo se carga la biblioteca propia compilada en `build/` cuando se pide `--backend native`. El CSV no elige bibliotecas ni ejecuta comandos. Es interoperabilidad `ctypes` en el host, no JNI Android ni un driver GNSS.
 
-## Evidencia y límites
+## Comprobaciones y límites
 
-macOS local: **25 tests sin omitidos**, compilación C con warnings como errores, reportes Python/nativo y resúmenes ES/EN. [CI correcta en GitHub](https://github.com/navalcode/gnss-diagnostics-lab/actions/runs/40878672208) para Python 3.11/3.14 Linux y 3.14 macOS, incluida compilación nativa y los 25 tests en cada job.
+La suite tiene **28 tests** de validación CSV, significado del informe, equivalencia Python/C, ABI C y recuperación de CLI. [Verificación](docs/VERIFICATION.md), en inglés, separa la compilación nativa actual, los ejemplos de terminal y la CI Linux/macOS. Si no se puede cargar la biblioteca, la CLI sale con 2 e indica `python3 tools/build_native.py` o `--backend python`; si no puede leer los datos, señala `--samples` y `--reference`.
 
-No se acredita adquisición Android, NMEA/RAW, trazas reales, validación de campo, certificación o navegación. Una evaluación física necesita procedencia, semántica de relojes, referencia defendible e incertidumbre propia.
+No se acredita adquisición Android, NMEA/mediciones raw, validación de campo, certificación de receptor o uso de navegación. Una medición física exigiría procedencia de captura, definición de relojes, referencia justificable y análisis de incertidumbre.
 
 ## Licencia
 
 Código, documentación y datos sintéticos originales: [MIT](LICENSE), Manuel Naval, 2026. Python, compilador y bibliotecas del sistema conservan sus licencias; no se redistribuyen sus fuentes/binarios.
-
-Los reportes de texto agrupan captura, continuidad y comparación con referencia. Muestran umbrales, fixes sin pareja, error medio/p50/p95/RMSE e incertidumbre declarada media con unidades. Los valores ausentes dicen «Sin datos», no cero. JSON y códigos de procesamiento se conservan. [Decisiones de presentación](DESIGN.md).
-
-El incremento de presentación del terminal pasa localmente 27 tests. Los enlaces de CI anteriores conservan su alcance registrado; el badge lleva a los resultados actuales.
